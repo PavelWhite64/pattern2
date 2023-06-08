@@ -16,7 +16,7 @@ public class DataGenirator {
     private static Faker faker = new Faker(new Locale("en"));
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
-            .setPort(9999)
+            .setPort(7777)
             .setAccept(ContentType.JSON)
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
@@ -32,29 +32,21 @@ public class DataGenirator {
                 .statusCode(200);
     }
 
-    public static Info genirateValidActiv() {
-        Info info = new Info(faker.name().username(), faker.internet().password(true), active);
-        registrationUsers(info);
-        return info;
+    public static String randomLogin() {
+        return faker.name().fullName();
     }
 
-    public static Info genirateValidBlocked() {
-        Info info = new Info(faker.name().username(), faker.internet().password(true), blocked);
-        registrationUsers(info);
-        return info;
+    public static String randomPassword() {
+        return faker.internet().password();
     }
 
-    public static Info genirateInvalidLogin() {
-        String password = faker.internet().password(true);
-        Info invalid = new Info(faker.name().username(), password, active);
-        registrationUsers(invalid);
-        return new Info(faker.name().username(), password, active);
+    public static Info user(String status) {
+        return new Info(randomLogin(), randomPassword(), status);
     }
 
-    public static Info generateInvalidPassword() {
-        String login = faker.name().username();
-        Info invalid = new Info(login, faker.internet().password(true), active);
-        registrationUsers(invalid);
-        return new Info(login, faker.internet().password(true), active);
+    public static Info regUser(String status) {
+        Info regUser = user(status);
+        registrationUsers(regUser);
+        return regUser;
     }
 }
